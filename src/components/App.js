@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import Contacts from './Contacts/Contacts';
+import Filter from './Contacts/Filter';
 
 export default class App extends Component {
   state = {
@@ -9,6 +10,10 @@ export default class App extends Component {
     filter: '',
     name: '',
     number: '',
+  };
+
+  changeFilter = filter => {
+    this.setState({ filter: filter.target.value });
   };
 
   handleChangeInput = ({ target }) => {
@@ -42,8 +47,18 @@ export default class App extends Component {
     }
   };
 
+  getFilteredTasks = () => {
+    const { filter, contacts } = this.state;
+
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase()),
+    );
+  };
+
   render() {
-    const { contacts, name, number } = this.state;
+    const { contacts, filter, name, number } = this.state;
+
+    const filteredContacts = this.getFilteredTasks();
 
     return (
       <>
@@ -74,7 +89,9 @@ export default class App extends Component {
             </button>
           </form>
         </div>
-        <Contacts contact={contacts} />
+        <h2>Contacts</h2>
+        <Filter value={filter} onChangeFilter={this.changeFilter} />
+        <Contacts contact={filteredContacts} />
       </>
     );
   }
