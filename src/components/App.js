@@ -1,43 +1,40 @@
 import React, { Component } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import Contacts from './Contacts/Contacts';
-import Filter from './Contacts/Filter';
+import ContactForm from './ContactForm/ContactForm';
+import ContactList from './ContactList/ContactList';
+import Filter from './Filter/Filter';
 
 export default class App extends Component {
   state = {
-    contacts: [],
+    contacts: [
+      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+    ],
     filter: '',
-    name: '',
-    number: '',
   };
 
   changeFilter = filter => {
     this.setState({ filter: filter.target.value });
   };
 
-  handleChangeInput = ({ target }) => {
-    const { name, value } = target;
-    this.setState({
-      [name]: value,
-    });
-  };
+  addContact = (name, number) => {
+    const { contacts } = this.state;
 
-  handleSubmit = e => {
-    e.preventDefault();
-
-    this.setState({ name: '', number: '' });
-  };
-
-  addContact = e => {
     const contact = {
       id: uuidv4(),
-      name: this.state.name,
-      number: this.state.number,
+      name,
+      number,
     };
 
-    if (this.state.number === '') {
-      alert('You did not wrote a number!');
+    if (
+      contacts.find(contact => {
+        return contact.name.toLowerCase() === name.toLowerCase();
+      })
+    ) {
+      alert(`${name} is already in contacts.`);
     } else {
       this.setState(state => {
         return {
@@ -56,42 +53,19 @@ export default class App extends Component {
   };
 
   render() {
-    const { contacts, filter, name, number } = this.state;
+    const { filter } = this.state;
 
     const filteredContacts = this.getFilteredTasks();
 
     return (
       <>
         <div>
-          <h2>Phonebook</h2>
-          <form onSubmit={this.handleSubmit}>
-            <label>
-              Name
-              <input
-                type="text"
-                value={name}
-                onChange={this.handleChangeInput}
-                name="name"
-                autoComplete="off"
-              />
-            </label>
-            <label>
-              Number
-              <input
-                type="phone"
-                value={number}
-                onChange={this.handleChangeInput}
-                name="number"
-              />
-            </label>
-            <button type="submit" onClick={this.addContact}>
-              Add contact
-            </button>
-          </form>
+          <h1>Phonebook</h1>
+          <ContactForm onAddContact={this.addContact} />
+          <h2>Contacts</h2>
+          <Filter value={filter} onChangeFilter={this.changeFilter} />
+          <ContactList contact={filteredContacts} />
         </div>
-        <h2>Contacts</h2>
-        <Filter value={filter} onChangeFilter={this.changeFilter} />
-        <Contacts contact={filteredContacts} />
       </>
     );
   }
