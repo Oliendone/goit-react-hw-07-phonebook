@@ -1,12 +1,13 @@
 import React from 'react';
 
-export default function ContactItem({ id, name, number }) {
+export default function ContactItem({ name, number, deleteContact }) {
   return (
     <>
-      <li key={id}>
-        <p>
-          {name}: {number}
-        </p>
+      <li>
+        {name}: {number}
+        <button type="button" onClick={deleteContact}>
+          Delete
+        </button>
       </li>
     </>
   );
