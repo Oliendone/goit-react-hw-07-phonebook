@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import PropTypes from 'prop-types';
 
 import ContactForm from './ContactForm/ContactForm';
 import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
 
+import s from './App.module.css';
+
 export default class App extends Component {
+  static propTypes = {
+    filter: PropTypes.string,
+    contacts: PropTypes.arrayOf(
+      PropTypes.objectOf(
+        PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      ),
+    ),
+  };
+
   state = {
     contacts: [],
     filter: '',
@@ -64,20 +76,24 @@ export default class App extends Component {
 
     return (
       <>
-        <div>
-          <h1>Phonebook</h1>
+        <div className={s.wrapperPhonebook}>
+          <h1 className={s.phoneBookHeading}>Phonebook</h1>
           <ContactForm onAddContact={this.addContact} />
-          <h2>Contacts</h2>
-          {contacts.lenght > 1 ? (
+          <h2 className={s.contactsHeading}>Contacts</h2>
+          {contacts.length > 1 ? (
             <Filter value={filter} onChangeFilter={this.changeFilter} />
           ) : (
             ''
           )}
+        </div>
+        {contacts.length !== 0 ? (
           <ContactList
             contact={filteredContacts}
             onDeleteContact={this.deleteContact}
           />
-        </div>
+        ) : (
+          <p className={s.noDataMessage}>No data in contacts</p>
+        )}
       </>
     );
   }
