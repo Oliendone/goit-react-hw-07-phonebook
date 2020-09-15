@@ -84,12 +84,11 @@ export default class App extends Component {
             <Filter value={filter} onChangeFilter={this.changeFilter} />
           )}
         </div>
-        {contacts.length !== 0 && (
-          <ContactList
-            contacts={filteredContacts}
-            onDelete={this.deleteContact}
-          />
-        )}
+
+        <ContactList
+          contacts={filteredContacts}
+          onDelete={this.deleteContact}
+        />
       </>
     );
   }
