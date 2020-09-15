@@ -25,12 +25,3 @@
   letter-spacing: 7px;
   padding-top: 10px;
 }
-
-.noDataMessage {
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 5px;
-  padding-top: 10px;
-  text-align: center;
-  font-size: 30px;
-}
