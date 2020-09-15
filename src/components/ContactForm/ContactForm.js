@@ -3,22 +3,29 @@ import PropTypes from 'prop-types';
 
 import s from './ContactForm.module.css';
 
+const INITIAL_STATE = {
+  name: '',
+  number: '',
+};
+
 export default class ContactForm extends Component {
   static propTypes = {
     name: PropTypes.string,
     number: PropTypes.number,
   };
 
-  state = {
-    name: '',
-    number: '',
-  };
+  state = { ...INITIAL_STATE };
 
   handleChangeInput = ({ target }) => {
     const { name, value } = target;
-    this.setState({
-      [name]: value,
-    });
+    this.setState({ [name]: value });
+  };
+
+  reset = () => {
+    return {
+      name: '',
+      number: '',
+    };
   };
 
   handleSubmit = e => {
@@ -26,7 +33,7 @@ export default class ContactForm extends Component {
 
     this.props.onAddContact(this.state.name, this.state.number);
 
-    this.setState({ name: '', number: '' });
+    this.setState(this.reset());
   };
 
   render() {

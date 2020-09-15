@@ -5,19 +5,24 @@ import ContactItem from './ContactItem';
 
 import s from './ContactList.module.css';
 
-export default function ContactList({ contact, onDeleteContact }) {
+export default function ContactList({ contacts, onDelete }) {
   return (
     <div>
-      <ul className={s.contacts}>
-        {contact.map(({ id, name, number }) => (
-          <ContactItem
-            key={id}
-            name={name}
-            number={number}
-            deleteContact={() => onDeleteContact(id)}
-          />
-        ))}
-      </ul>
+      {contacts.length > 0 && (
+        <ul className={s.contacts}>
+          {contacts.map(({ id, name, number }) => (
+            <ContactItem
+              key={id}
+              name={name}
+              number={number}
+              deleteContact={() => onDelete(id)}
+            />
+          ))}
+        </ul>
+      )}
+      {contacts.length === 0 && (
+        <p className={s.noDataMessage}>No data in contacts</p>
+      )}
     </div>
   );
 }
@@ -29,11 +34,3 @@ ContactList.propTypes = {
     ),
   ).isRequired,
 };
-
-// ContactList.propTypes = {
-//   contact: PropTypes.shape({
-//     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-//     name: PropTypes.string,
-//     number: PropTypes.number,
-//   }).isRequired,
-// };

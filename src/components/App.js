@@ -30,24 +30,24 @@ export default class App extends Component {
   addContact = (name, number) => {
     const { contacts } = this.state;
 
-    const contact = {
+    const newContact = {
       id: uuidv4(),
       name,
       number,
     };
 
-    if (
-      contacts.find(contact => {
-        return contact.name.toLowerCase() === name.toLowerCase();
-      })
-    ) {
+    const isInContacts = contacts.find(contact => {
+      return contact.name.toLowerCase() === name.toLowerCase();
+    });
+
+    if (isInContacts) {
       alert(`${name} is already in contacts.`);
     } else if (number === '') {
       alert("You don't wrote a nubmer.");
     } else {
-      this.setState(state => {
+      this.setState(prevState => {
         return {
-          contacts: [...state.contacts, contact],
+          contacts: [...prevState.contacts, newContact],
         };
       });
     }
@@ -80,19 +80,15 @@ export default class App extends Component {
           <h1 className={s.phoneBookHeading}>Phonebook</h1>
           <ContactForm onAddContact={this.addContact} />
           <h2 className={s.contactsHeading}>Contacts</h2>
-          {contacts.length > 1 ? (
+          {contacts.length > 0 && (
             <Filter value={filter} onChangeFilter={this.changeFilter} />
-          ) : (
-            ''
           )}
         </div>
-        {contacts.length !== 0 ? (
+        {contacts.length !== 0 && (
           <ContactList
-            contact={filteredContacts}
-            onDeleteContact={this.deleteContact}
+            contacts={filteredContacts}
+            onDelete={this.deleteContact}
           />
-        ) : (
-          <p className={s.noDataMessage}>No data in contacts</p>
         )}
       </>
     );
