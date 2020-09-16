@@ -28,7 +28,7 @@ export default function ContactList({ contacts, onDelete }) {
 }
 
 ContactList.propTypes = {
-  contact: PropTypes.arrayOf(
+  contacts: PropTypes.arrayOf(
     PropTypes.objectOf(
       PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     ),
