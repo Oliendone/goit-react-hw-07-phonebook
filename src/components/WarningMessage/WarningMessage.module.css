@@ -1,0 +1,20 @@
+body {
+  position: relative;
+}
+
+.textContainer {
+  width: 200px;
+  height: 50px;
+  background-color: rgb(216, 64, 64);
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 20px;
+  right: 20px;
+}
+
+.text {
+  color: #fff;
+}

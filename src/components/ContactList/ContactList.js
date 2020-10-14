@@ -1,28 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 import ContactItem from './ContactItem';
 
 import s from './ContactList.module.css';
+import animation from './contactItemAnimation.module.css';
 
 export default function ContactList({ contacts, onDelete }) {
   return (
     <div>
-      {contacts.length > 0 && (
-        <ul className={s.contacts}>
-          {contacts.map(({ id, name, number }) => (
+      <TransitionGroup component="ul" className={s.contacts}>
+        {contacts.map(({ id, name, number }) => (
+          <CSSTransition key={id} timeout={250} classNames={animation}>
             <ContactItem
               key={id}
               name={name}
               number={number}
               deleteContact={() => onDelete(id)}
             />
-          ))}
-        </ul>
-      )}
-      {contacts.length === 0 && (
-        <p className={s.noDataMessage}>No data in contacts</p>
-      )}
+          </CSSTransition>
+        ))}
+      </TransitionGroup>
     </div>
   );
 }

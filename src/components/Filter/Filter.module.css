@@ -5,3 +5,7 @@
 .filterInput {
   composes: nameInput from '../ContactForm/ContactForm.module.css';
 }
+
+/* .filterWrapper {
+  display: block;
+} */

@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import ContactForm from './ContactForm/ContactForm';
 import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
+import WarningMessage from './WarningMessage/WarningMessage';
 
 import s from './App.module.css';
+import styles from './AppearHeading.module.css';
+import fade from '../components/Filter/filterAppear.module.css';
+import warning from '../components/WarningMessage/appearMessage.module.css';
 
 export default class App extends Component {
   static propTypes = {
@@ -21,6 +26,8 @@ export default class App extends Component {
   state = {
     contacts: [],
     filter: '',
+    warningMessage: '',
+    pushWarningMessage: false,
   };
 
   componentDidMount() {
@@ -55,13 +62,21 @@ export default class App extends Component {
     });
 
     if (isInContacts) {
-      alert(`${name} is already in contacts.`);
+      this.setState({
+        warningMessage: 'Contact already exist!',
+        pushWarningMessage: true,
+      });
+      setTimeout(() => this.setState({ pushWarningMessage: false }), 3000);
     } else if (number === '') {
-      alert("You don't wrote a nubmer.");
+      this.setState({
+        warningMessage: 'Please, write a number.',
+        pushWarningMessage: true,
+      });
+      setTimeout(() => this.setState({ pushWarningMessage: false }), 3000);
     } else {
       this.setState(prevState => {
         return {
-          contacts: [...prevState.contacts, newContact],
+          contacts: [newContact, ...prevState.contacts],
         };
       });
     }
@@ -84,25 +99,47 @@ export default class App extends Component {
   };
 
   render() {
-    const { contacts, filter } = this.state;
-
+    const { contacts, filter, warningMessage, pushWarningMessage } = this.state;
     const filteredContacts = this.getFilteredTasks();
+    const isContacts = contacts.length > 0;
+    const warningMessageText = warningMessage;
 
     return (
       <>
         <div className={s.wrapperPhonebook}>
-          <h1 className={s.phoneBookHeading}>Phonebook</h1>
+          <CSSTransition
+            in={true}
+            appear={true}
+            classNames={styles}
+            timeout={500}
+            unmountOnExit
+          >
+            <h1 className={s.phoneBookHeading}>Phonebook</h1>
+          </CSSTransition>
           <ContactForm onAddContact={this.addContact} />
           <h2 className={s.contactsHeading}>Contacts</h2>
-          {contacts.length > 0 && (
+          <CSSTransition
+            in={isContacts}
+            classNames={fade}
+            timeout={250}
+            unmountOnExit
+          >
             <Filter value={filter} onChangeFilter={this.changeFilter} />
-          )}
+          </CSSTransition>
         </div>
-
+        {/* <p className={s.noDataMessage}>No data in contacts</p> */}
         <ContactList
           contacts={filteredContacts}
           onDelete={this.deleteContact}
         />
+        <CSSTransition
+          in={pushWarningMessage}
+          classNames={warning}
+          timeout={250}
+          unmountOnExit
+        >
+          <WarningMessage messageText={warningMessageText} />
+        </CSSTransition>
       </>
     );
   }
