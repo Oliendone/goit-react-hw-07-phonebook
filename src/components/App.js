@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { CSSTransition } from 'react-transition-group';
 
 import ContactForm from './ContactForm/ContactForm';
 import ContactList from './ContactList/ContactList';
@@ -127,7 +127,7 @@ export default class App extends Component {
             <Filter value={filter} onChangeFilter={this.changeFilter} />
           </CSSTransition>
         </div>
-        {/* <p className={s.noDataMessage}>No data in contacts</p> */}
+
         <ContactList
           contacts={filteredContacts}
           onDelete={this.deleteContact}

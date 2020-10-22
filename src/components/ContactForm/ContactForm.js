@@ -40,7 +40,7 @@ export default class ContactForm extends Component {
     const { name, number } = this.state;
     return (
       <>
-        <form className={s.phonebBookForm} onSubmit={this.handleSubmit}>
+        <form className={s.phoneBookForm} onSubmit={this.handleSubmit}>
           <label>
             <p className={s.contactName}>Name</p>
             <input
