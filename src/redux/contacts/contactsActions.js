@@ -2,11 +2,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 const addContact = (name, number) => ({
   type: 'phonebook/addContact',
-  payload: {task: {
-    id: uuidv4(),
-    name,
-    number,
-  }},
+  payload: {
+    contact: {
+      id: uuidv4(),
+      name,
+      number,
+    },
+  },
 });
 
 const deleteContact = id => ({
@@ -16,11 +18,11 @@ const deleteContact = id => ({
   },
 });
 
-const filterContacts = value => ({
+const filterContacts = filter => ({
   type: 'phonebook/filterContacts',
   payload: {
-    value,
+    filter,
   },
 });
 
-default export {addContact, deleteContact, filterContacts};
+export default { addContact, deleteContact, filterContacts };

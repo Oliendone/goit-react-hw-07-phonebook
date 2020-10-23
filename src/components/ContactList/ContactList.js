@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { connect } from 'react-redux';
 
 import ContactItem from './ContactItem';
 
 import s from './ContactList.module.css';
 import animation from './contactItemAnimation.module.css';
+import contactsActions from '../../redux/contacts/contactsActions';
 
-export default function ContactList({ contacts, onDelete }) {
+const ContactList = ({ contacts, onDelete }) => {
   return (
     <div>
       <TransitionGroup component="ul" className={s.contacts}>
@@ -24,7 +26,7 @@ export default function ContactList({ contacts, onDelete }) {
       </TransitionGroup>
     </div>
   );
-}
+};
 
 ContactList.propTypes = {
   contacts: PropTypes.arrayOf(
@@ -33,3 +35,15 @@ ContactList.propTypes = {
     ),
   ).isRequired,
 };
+
+const mapStateToProps = state => ({
+  contacts: state.contacts.items.filter(item =>
+    item.name.toLowerCase().includes(state.contacts.filter.toLowerCase()),
+  ),
+});
+
+const mapDispatchToProps = {
+  onDelete: contactsActions.deleteContact,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactList);

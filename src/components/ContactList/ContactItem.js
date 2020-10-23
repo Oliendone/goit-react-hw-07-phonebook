@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import s from './ContactList.module.css';
 
-export default function ContactItem({ name, number, deleteContact }) {
+const ContactItem = ({ name, number, deleteContact }) => {
   return (
     <>
       <li className={s.contactItem}>
@@ -19,10 +19,12 @@ export default function ContactItem({ name, number, deleteContact }) {
       </li>
     </>
   );
-}
+};
 
 ContactItem.propTypes = {
   name: PropTypes.string.isRequired,
   number: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   deleteContact: PropTypes.func.isRequired,
 };
+
+export default ContactItem;
