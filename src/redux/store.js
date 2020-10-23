@@ -2,22 +2,26 @@ import { createStore, combineReducers } from 'redux';
 import contactsReducers from './contacts/contactsReducers';
 import warningMessage from './warning/warningMessageReducers';
 
-const rootReducer = combineReducers({
-  contacts: contactsReducers,
-  message: warningMessage,
-});
+import { configureStore } from '@reduxjs/toolkit';
 
-const persistedState = localStorage.getItem('reduxState')
+// const rootReducer = combineReducers({
+//   contacts: contactsReducers,
+//   message: warningMessage,
+// });
+
+const preloadedState = localStorage.getItem('reduxState')
   ? JSON.parse(localStorage.getItem('reduxState'))
   : {};
 
-const store = createStore(
-  rootReducer,
-  persistedState,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-);
+const store = configureStore({
+  reducer: {
+    contacts: contactsReducers,
+    message: warningMessage,
+    preloadedState,
+  },
+});
 
-console.log(persistedState);
+console.log(preloadedState);
 
 store.subscribe(() => {
   localStorage.setItem('reduxState', JSON.stringify(store.getState()));

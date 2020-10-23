@@ -1,38 +1,20 @@
 import { combineReducers } from 'redux';
+import { createReducer } from '@reduxjs/toolkit';
+import contactActions from './contactsActions';
 
-const items = (state = [], { type, payload }) => {
-  switch (type) {
-    case 'phonebook/addContact':
-      return [...state, payload.contact];
+const itemsReducer = createReducer([], {
+  [contactActions.addContact]: (state, action) => [
+    ...state,
+    action.payload.contact,
+  ],
+  [contactActions.deleteContact]: (state, action) =>
+    state.filter(item => item.id !== action.payload),
+});
 
-    case 'phonebook/deleteContact':
-      return state.filter(item => item.id !== payload.id);
+const filterReducer = createReducer('', {
+  [contactActions.filterContacts]: (state, action) => action.payload.filter,
+});
 
-    default:
-      return state;
-  }
-};
+export default combineReducers({ items: itemsReducer, filter: filterReducer });
 
-const filter = (state = '', { type, payload }) => {
-  switch (type) {
-    case 'phonebook/filterContacts':
-      return payload.filter;
-
-    default:
-      return state;
-  }
-};
-
-export default combineReducers({ items, filter });
-
-// changeFilter = filter => {
-//   this.setState({ filter: filter.target.value });
-// };
-
-// getFilteredTasks = () => {
-//   const { filter, contacts } = this.state;
-
-//   return contacts.filter(contact =>
-//     contact.name.toLowerCase().includes(filter.toLowerCase()),
-//   );
-// };
+//

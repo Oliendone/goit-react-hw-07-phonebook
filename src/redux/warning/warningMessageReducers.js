@@ -1,16 +1,17 @@
 import { combineReducers } from 'redux';
+import { createReducer } from '@reduxjs/toolkit';
+import warningMessageActions from './warningMessageActions';
 
-const warningMessage = (state = {}, { type, payload }) => {
-  switch (type) {
-    case 'warning/showMessage':
-      return payload;
-
-    case 'warning/hideMessage':
-      return payload;
-
-    default:
-      return state;
-  }
-};
+const warningMessage = createReducer(
+  {},
+  {
+    [warningMessageActions.showMessage]: (state, action) => {
+      return action.payload;
+    },
+    [warningMessageActions.hideMessage]: (state, action) => {
+      return action.payload;
+    },
+  },
+);
 
 export default combineReducers({ warningMessage });

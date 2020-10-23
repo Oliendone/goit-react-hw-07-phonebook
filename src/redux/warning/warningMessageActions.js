@@ -1,17 +1,17 @@
-const showMessage = text => ({
-  type: 'warning/showMessage',
+import { createAction } from '@reduxjs/toolkit';
+
+const showMessage = createAction('warning/showMessage', text => ({
   payload: {
     text,
     pushWarningMessage: true,
   },
-});
+}));
 
-const hideMessage = text => ({
-  type: 'warning/hideMessage',
+const hideMessage = createAction('warning/showMessage', text => ({
   payload: {
     text,
     pushWarningMessage: false,
   },
-});
+}));
 
 export default { showMessage, hideMessage };
