@@ -4,11 +4,13 @@ import { CSSTransition } from 'react-transition-group';
 
 import WarningMessage from '../WarningMessage/WarningMessage';
 
-import contactsActions from '../../redux/contacts/contactsActions';
+import contactsOperations from '../../redux/contacts/contactsOperations';
 import s from './ContactForm.module.css';
 import { connect } from 'react-redux';
 import warning from '../WarningMessage/appearMessage.module.css';
 import warningMessageActions from '../../redux/warning/warningMessageActions';
+import contactsSelectors from '../../redux/contacts/contactsSelectors';
+import warningMessageSelectors from '../../redux/warning/warningMessageSelectors';
 
 const INITIAL_STATE = {
   name: '',
@@ -107,13 +109,13 @@ class ContactForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  contacts: state.contacts.items,
-  isWarningMessage: state.message.warningMessage.pushWarningMessage,
-  warningMessageText: state.message.warningMessage.text,
+  contacts: contactsSelectors.getContactsItem(state),
+  isWarningMessage: warningMessageSelectors.getKnownMessage(state),
+  warningMessageText: warningMessageSelectors.getWarningText(state),
 });
 
 const mapDispatchToProps = {
-  onAddContact: contactsActions.addContact,
+  onAddContact: contactsOperations.addContact,
   warningMessageOn: warningMessageActions.showMessage,
   warningMessageOff: warningMessageActions.hideMessage,
 };

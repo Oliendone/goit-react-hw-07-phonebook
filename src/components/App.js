@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 
 import ContactForm from './ContactForm/ContactForm';
@@ -9,43 +8,16 @@ import Filter from './Filter/Filter';
 import s from './App.module.css';
 import styles from './AppearHeading.module.css';
 import fade from '../components/Filter/filterAppear.module.css';
-import warning from '../components/WarningMessage/appearMessage.module.css';
 import { connect } from 'react-redux';
+import contactsOperations from '../redux/contacts/contactsOperations';
+import contactsSelectors from '../redux/contacts/contactsSelectors';
 
 class App extends Component {
-  static propTypes = {
-    filter: PropTypes.string,
-    contacts: PropTypes.arrayOf(
-      PropTypes.objectOf(
-        PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      ),
-    ),
-  };
-
-  state = {
-    contacts: [],
-    filter: '',
-    warningMessage: '',
-    pushWarningMessage: false,
-  };
-
   componentDidMount() {
-    const existedContacts = localStorage.getItem('contacts');
-
-    if (existedContacts) {
-      this.setState({ contacts: JSON.parse(existedContacts) });
-    }
-  }
-
-  componentDidUpdate(prevState) {
-    if (prevState.contacts !== this.state.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
+    this.props.onFetchContacts();
   }
 
   render() {
-    const { warningMessage, pushWarningMessage } = this.state;
-
     return (
       <>
         <div className={s.wrapperPhonebook}>
@@ -76,7 +48,11 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  isContacts: state.contacts.items.length > 0,
+  isContacts: contactsSelectors.getContactsItem(state).length > 0,
 });
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = {
+  onFetchContacts: contactsOperations.fetchContacts,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

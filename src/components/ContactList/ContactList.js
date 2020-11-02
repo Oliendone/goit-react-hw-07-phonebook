@@ -7,7 +7,8 @@ import ContactItem from './ContactItem';
 
 import s from './ContactList.module.css';
 import animation from './contactItemAnimation.module.css';
-import contactsActions from '../../redux/contacts/contactsActions';
+import contactsOperations from '../../redux/contacts/contactsOperations';
+import contactsSelectors from '../../redux/contacts/contactsSelectors';
 
 const ContactList = ({ contacts, onDelete }) => {
   return (
@@ -37,13 +38,11 @@ ContactList.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  contacts: state.contacts.items.filter(item =>
-    item.name.toLowerCase().includes(state.contacts.filter.toLowerCase()),
-  ),
+  contacts: contactsSelectors.getFilteredContacts(state),
 });
 
 const mapDispatchToProps = {
-  onDelete: contactsActions.deleteContact,
+  onDelete: contactsOperations.deleteContact,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactList);
