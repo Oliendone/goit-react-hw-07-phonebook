@@ -109,7 +109,7 @@ class ContactForm extends Component {
 }
 
 const mapStateToProps = state => ({
-  contacts: contactsSelectors.getContactsItem(state),
+  contacts: contactsSelectors.getContactsItems(state),
   isWarningMessage: warningMessageSelectors.getKnownMessage(state),
   warningMessageText: warningMessageSelectors.getWarningText(state),
 });

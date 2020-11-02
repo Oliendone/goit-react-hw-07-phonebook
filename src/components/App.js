@@ -48,7 +48,7 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  isContacts: contactsSelectors.getContactsItem(state).length > 0,
+  isContacts: contactsSelectors.getContactsItems(state).length > 0,
 });
 
 const mapDispatchToProps = {
